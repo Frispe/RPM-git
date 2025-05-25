@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список сборок ПК</title>
+</head>
+<body>
+<div>
+    <a href="/">На главную</a>
+</div>
+<h1>Список сборок ПК</h1>
+
+<form action="/assemblyList/add" method="post">
+    <select name="processorId" required>
+        <option value="">Выберите процессор</option>
+        <option th:each="processor : ${processors}"
+                th:value="${processor.id}"
+                th:text="${processor.brand.name + ' ' + processor.model}"></option>
+    </select>
+    <input type="number" name="motherboardId" placeholder="ID материнской платы" required>
+    <input type="number" name="ramId" placeholder="ID оперативной памяти" required>
+    <input type="number" name="gpuId" placeholder="ID видеокарты" required>
+    <input type="number" name="powerSupplyId" placeholder="ID блока питания" required>
+    <input type="number" name="caseId" placeholder="ID корпуса" required>
+    <input type="number" name="coolingSystemId" placeholder="ID системы охлаждения" required>
+    <input type="number" name="pcBuilderId" placeholder="ID сборщика" required>
+    <button type="submit">Добавить сборку</button>
+</form>
+
+<form action="/assemblyList/searchById" method="get">
+    <input type="number" name="id" placeholder="Введите ID сборки" required>
+    <button type="submit">Найти по ID</button>
+</form>
+
+<form action="/assemblyList/searchByPcBuilderId" method="get">
+    <input type="number" name="pcBuilderId" placeholder="Введите ID сборщика" required>
+    <button type="submit">Найти по ID сборщика</button>
+</form>
+
+<h2>Все сборки:</h2>
+<ul>
+    <li th:each="assembly : ${assemblies}">
+        <div>
+            <span th:text="'ID: ' + ${assembly.id}"></span><br>
+            <span th:text="'Процессор: ' + ${assembly.processor.brand.name + ' ' + assembly.processor.model}"></span><br>
+            <span th:text="'Материнская плата: ' + ${assembly.motherboardId}"></span><br>
+            <span th:text="'Оперативная память: ' + ${assembly.ramId}"></span><br>
+            <span th:text="'Видеокарта: ' + ${assembly.gpuId}"></span><br>
+            <span th:text="'Блок питания: ' + ${assembly.powerSupplyId}"></span><br>
+            <span th:text="'Корпус: ' + ${assembly.caseId}"></span><br>
+            <span th:text="'Охлаждение: ' + ${assembly.coolingSystemId}"></span><br>
+            <span th:text="'Сборщик: ' + ${assembly.pcBuilderId}"></span>
+
+            <form action="/assemblyList/update" method="post">
+                <input type="hidden" name="id" th:value="${assembly.id}"/>
+                <select name="processorId" required>
+                    <option th:each="processor : ${processors}"
+                            th:value="${processor.id}"
+                            th:text="${processor.brand.name + ' ' + processor.model}"
+                            th:selected="${processor.id == assembly.processor.id}"></option>
+                </select>
+                <input type="number" name="motherboardId" th:value="${assembly.motherboardId}" required>
+                <input type="number" name="ramId" th:value="${assembly.ramId}" required>
+                <input type="number" name="gpuId" th:value="${assembly.gpuId}" required>
+                <input type="number" name="powerSupplyId" th:value="${assembly.powerSupplyId}" required>
+                <input type="number" name="caseId" th:value="${assembly.caseId}" required>
+                <input type="number" name="coolingSystemId" th:value="${assembly.coolingSystemId}" required>
+                <input type="number" name="pcBuilderId" th:value="${assembly.pcBuilderId}" required>
+                <button type="submit">Обновить</button>
+            </form>
+
+            <form action="/assemblyList/delete" method="post">
+                <input type="hidden" name="id" th:value="${assembly.id}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </div>
+    </li>
+</ul>
+
+<div>
+    <span>Страница: </span>
+    <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:if="${i != currentPage}" th:href="@{/assemblyList(page=${i})}" th:text="${i + 1}"></a>
+        <span th:unless="${i != currentPage}" th:text="${i + 1}"></span>
+    </th:block>
+</div>
+
+<style>
+    /* Стили такие же, как в pcBuilderList.html */
+    body {
+        font-family: 'Comfortaa', sans-serif;
+        background-color: #010612;
+        color: white;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    h1, h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-bottom: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    input[type="number"] {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background-color: white;
+        color: #333;
+        font-family: 'Comfortaa', sans-serif;
+    }
+
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #aaa;
+    }
+
+    button {
+        padding: 8px 16px;
+        background-color: #1d0964;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Comfortaa', sans-serif;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #555;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+
+    li form {
+        margin-bottom: 0;
+    }
+
+    div {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    a {
+        color: #4dabf7;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    span {
+        margin-right: 5px;
+    }
+</style>
+</body>
+</html>

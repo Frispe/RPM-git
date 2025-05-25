@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<div style="text-align: center; margin-bottom: 20px;">
+    <a href="/" style="display: inline-block; padding: 8px 16px; background-color: #1d0964; color: white;
+      text-decoration: none; border-radius: 4px; transition: background-color 0.3s; font-family: 'Comfortaa', sans-serif;">
+        На главную
+    </a>
+</div>
+<h1>Список пользователей</h1>
+
+<form action="/userList/add" method="post">
+    <input type="text" name="lastName" placeholder="Фамилия" required>
+    <input type="text" name="firstName" placeholder="Имя" required>
+    <input type="text" name="middleName" placeholder="Отчество" required>
+    <input type="text" name="login" placeholder="Логин" required>
+    <input type="password" name="password" placeholder="Пароль" required>
+    <input type="text" name="phoneNumber" placeholder="Номер телефона" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="address" placeholder="Адрес" required>
+    <button type="submit">Добавить пользователя</button>
+</form>
+
+<form action="/userList/searchById" method="get" style="margin-bottom: 20px;">
+    <input type="number" name="id" placeholder="Введите ID пользователя" required>
+    <button type="submit">Найти по ID</button>
+</form>
+
+<form action="/userList/searchByLogin" method="get" style="margin-bottom: 20px;">
+    <input type="text" name="login" placeholder="Введите логин пользователя" required>
+    <button type="submit">Найти по логину</button>
+</form>
+
+<h2>Все пользователи:</h2>
+<ul>
+    <th:block th:each="user : ${users}">
+        <li>
+            <span th:text="${user.id} + ', ' + ${user.lastName} + ' ' + ${user.firstName} + ' ' + ${user.middleName} + ', ' + ${user.login} + ', ' + ${user.phoneNumber} + ', ' + ${user.email} + ', ' + ${user.address}"></span>
+
+            <form action="/userList/update" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="text" name="lastName" th:value="${user.lastName}" placeholder="Фамилия" required/>
+                <input type="text" name="firstName" th:value="${user.firstName}" placeholder="Имя" required/>
+                <input type="text" name="middleName" th:value="${user.middleName}" placeholder="Отчество"/>
+                <input type="text" name="login" th:value="${user.login}" placeholder="Логин" required/>
+                <input type="password" name="password" th:value="${user.password}" placeholder="Пароль" required/>
+                <input type="text" name="phoneNumber" th:value="${user.phoneNumber}" placeholder="Номер телефона" required/>
+                <input type="email" name="email" th:value="${user.email}" placeholder="Email" required/>
+                <input type="text" name="address" th:value="${user.address}" placeholder="Адрес"/>
+                <button type="submit">Обновить</button>
+            </form>
+
+            <form action="/userList/delete" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
+
+<div>
+    <span>Страница: </span>
+    <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:if="${i != currentPage}" th:href="@{/userList(page=${i})}" th:text="${i + 1}"></a>
+        <span th:unless="${i != currentPage}" th:text="${i + 1}"></span>
+    </th:block>
+</div>
+<style>
+    body {
+        font-family: 'Comfortaa', sans-serif;
+        background-color: #010612;
+        color: white;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    h1, h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-bottom: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background-color: white;
+        color: #333;
+        font-family: 'Comfortaa', sans-serif;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #aaa;
+    }
+
+    button {
+        padding: 8px 16px;
+        background-color: #1d0964;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Comfortaa', sans-serif;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #555;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+
+    li form {
+        margin-bottom: 0;
+    }
+
+    div {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    a {
+        color: #4dabf7;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    span {
+        margin-right: 5px;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список чеков</title>
+</head>
+<body>
+<div>
+  <a href="/">На главную</a>
+</div>
+<h1>Список чеков</h1>
+
+<form action="/checkList/add" method="post">
+  <input type="text" name="receiptCode" placeholder="Код получения" required>
+  <input type="number" step="0.01" name="totalPrice" placeholder="Общая стоимость" min="0" required>
+  <input type="text" name="deliveryAddress" placeholder="Адрес доставки" required>
+  <button type="submit">Добавить чек</button>
+</form>
+
+<form action="/checkList/searchById" method="get">
+  <input type="number" name="id" placeholder="Введите ID чека" required>
+  <button type="submit">Найти по ID</button>
+</form>
+
+<form action="/checkList/searchByReceiptCode" method="get">
+  <input type="text" name="receiptCode" placeholder="Введите код получения" required>
+  <button type="submit">Найти по коду</button>
+</form>
+
+<h2>Все чеки:</h2>
+<ul>
+  <li th:each="check : ${checks}">
+    <div>
+      <span th:text="'ID: ' + ${check.id}"></span><br>
+      <span th:text="'Код: ' + ${check.receiptCode}"></span><br>
+      <span th:text="'Сумма: ' + ${check.totalPrice}"></span><br>
+      <span th:text="'Адрес: ' + ${check.deliveryAddress}"></span><br>
+      <span th:if="${check.order != null}"
+            th:text="'Заказ: ' + ${check.order.id}"></span>
+
+      <form action="/checkList/update" method="post">
+        <input type="hidden" name="id" th:value="${check.id}"/>
+        <input type="text" name="receiptCode" th:value="${check.receiptCode}" required>
+        <input type="number" step="0.01" name="totalPrice" th:value="${check.totalPrice}" required>
+        <input type="text" name="deliveryAddress" th:value="${check.deliveryAddress}" required>
+        <button type="submit">Обновить</button>
+      </form>
+
+      <form action="/checkList/delete" method="post">
+        <input type="hidden" name="id" th:value="${check.id}"/>
+        <button type="submit">Удалить</button>
+      </form>
+    </div>
+  </li>
+</ul>
+
+<div>
+  <span>Страница: </span>
+  <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+    <a th:if="${i != currentPage}" th:href="@{/checkList(page=${i})}" th:text="${i + 1}"></a>
+    <span th:unless="${i != currentPage}" th:text="${i + 1}"></span>
+  </th:block>
+</div>
+<style>
+  body {
+    font-family: 'Comfortaa', sans-serif;
+    background-color: #010612;
+    color: white;
+    padding: 20px;
+    line-height: 1.6;
+  }
+
+  h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    font-family: 'Comfortaa', sans-serif;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #aaa;
+  }
+
+  button {
+    padding: 8px 16px;
+    background-color: #1d0964;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Comfortaa', sans-serif;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #555;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  li form {
+    margin-bottom: 0;
+  }
+
+  div {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #4dabf7;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  span {
+    margin-right: 5px;
+  }
+</style>
+</body>
+</html>
