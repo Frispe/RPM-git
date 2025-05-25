@@ -11,5 +11,4 @@ public interface AdditionService {
     AdditionModel updateAddition(AdditionModel addition);
     void deleteAddition(int id);
     List<AdditionModel> findAdditionsWithPagination(int page, int size);
-    List<AdditionModel> findAllById(List<Long> ids);
 }

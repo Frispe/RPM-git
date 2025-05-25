@@ -1,12 +1,8 @@
 package com.example.praktos3.user.model;
 
-import com.example.praktos3.order.model.OrderModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,7 +23,6 @@ public class UserModel {
     private String login;
 
     @NotBlank(message = "Пароль обязателен")
-    @Size(min = 6, message = "Пароль должен содержать минимум 6 символов")
     private String password;
 
     @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Некорректный номер телефона")
@@ -37,9 +32,6 @@ public class UserModel {
     private String email;
 
     private String address;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderModel> orders;
 
 
     public UserModel() {
@@ -130,13 +122,5 @@ public class UserModel {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<OrderModel> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
     }
 }

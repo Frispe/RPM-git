@@ -42,7 +42,9 @@
     <li th:each="assembly : ${assemblies}">
         <div>
             <span th:text="'ID: ' + ${assembly.id}"></span><br>
-            <span th:text="'Процессор: ' + ${assembly.processor.brand.name + ' ' + assembly.processor.model}"></span><br>
+            <span th:text="'Процессор: ' + (assembly.processor != null ?
+                  (assembly.processor.brand != null ? assembly.processor.brand.name + ' ' : '') +
+                  assembly.processor.model : 'N/A')"></span><br>
             <span th:text="'Материнская плата: ' + ${assembly.motherboardId}"></span><br>
             <span th:text="'Оперативная память: ' + ${assembly.ramId}"></span><br>
             <span th:text="'Видеокарта: ' + ${assembly.gpuId}"></span><br>
@@ -56,7 +58,7 @@
                 <select name="processorId" required>
                     <option th:each="processor : ${processors}"
                             th:value="${processor.id}"
-                            th:text="${processor.brand.name + ' ' + processor.model}"
+                            th:text="${processor.brand != null ? processor.brand.name + ' ' : ''} + ${processor.model}"
                             th:selected="${processor.id == assembly.processor.id}"></option>
                 </select>
                 <input type="number" name="motherboardId" th:value="${assembly.motherboardId}" required>

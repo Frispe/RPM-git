@@ -3,12 +3,9 @@ package com.example.praktos3.payment.controller;
 import com.example.praktos3.payment.model.PaymentMethodModel;
 import com.example.praktos3.payment.service.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @Controller
@@ -67,16 +64,4 @@ public class PaymentMethodController {
         model.addAttribute("totalPages", 1);
         return "paymentMethodList";
     }
-    @GetMapping("/{id}/orders")
-    public String getOrdersForPaymentMethod(@PathVariable long id, Model model) {
-        PaymentMethodModel paymentMethod = paymentMethodService.findPaymentMethodById(id);
-        if (paymentMethod == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment method not found");
-        }
-
-        model.addAttribute("paymentMethod", paymentMethod);
-        model.addAttribute("orders", paymentMethod.getOrders());
-        return "paymentMethodOrders";
-    }
-
 }

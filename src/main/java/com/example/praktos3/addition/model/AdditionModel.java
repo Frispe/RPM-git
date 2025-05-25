@@ -1,10 +1,7 @@
 package com.example.praktos3.addition.model;
 
-import com.example.praktos3.order.model.OrderModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Addition")
@@ -15,9 +12,6 @@ public class AdditionModel {
 
     @NotBlank(message = "Addition is required")
     private String name;
-
-    @ManyToMany(mappedBy = "additions", fetch = FetchType.LAZY)
-    private List<OrderModel> orders;
 
     public AdditionModel(long id, String name) {
         this.id = id;
@@ -42,13 +36,5 @@ public class AdditionModel {
 
 
     public AdditionModel() {
-    }
-
-    public List<OrderModel> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
     }
 }

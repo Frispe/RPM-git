@@ -1,6 +1,5 @@
 package com.example.praktos3.guarantee.model;
 
-import com.example.praktos3.order.model.OrderModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,9 +21,6 @@ public class GuaranteeModel {
     @Positive(message = "Duration must be positive")
     private int durationInDays;
 
-    @OneToOne(mappedBy = "guarantee")
-    private OrderModel order;
-
     public GuaranteeModel() {
     }
 
@@ -43,11 +39,4 @@ public class GuaranteeModel {
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
     public int getDurationInDays() { return durationInDays; }
     public void setDurationInDays(int durationInDays) { this.durationInDays = durationInDays; }
-    public OrderModel getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderModel order) {
-        this.order = order;
-    }
 }

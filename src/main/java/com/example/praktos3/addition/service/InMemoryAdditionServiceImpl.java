@@ -2,7 +2,10 @@ package com.example.praktos3.addition.service;
 
 import com.example.praktos3.addition.model.AdditionModel;
 import com.example.praktos3.addition.repository.InMemoryAdditionRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
@@ -47,11 +50,7 @@ public class InMemoryAdditionServiceImpl implements AdditionService {
 
     @Override
     public List<AdditionModel> findAdditionsWithPagination(int page, int size) {
-        return additionRepository.findAdditionWithPagination(page, size);
-    }
-
-    @Override
-    public List<AdditionModel> findAllById(List<Long> ids) {
-        return additionRepository.findAllById(ids);
+        Pageable pageable = PageRequest.of(page, size);
+        return additionRepository.findAll(pageable).getContent();
     }
 }

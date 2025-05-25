@@ -32,8 +32,6 @@ public class ProcessorModel {
     @PositiveOrZero(message = "Price must be positive or zero")
     private double price;
 
-    @OneToMany(mappedBy = "processor", fetch = FetchType.LAZY)
-    private List<AssemblyModel> assemblies;
 
     public ProcessorModel() {
     }
@@ -49,8 +47,14 @@ public class ProcessorModel {
     }
 
 
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public BrandModel getBrand() {
         return brand;
     }
@@ -58,19 +62,36 @@ public class ProcessorModel {
     public void setBrand(BrandModel brand) {
         this.brand = brand;
     }
-    public String getModel() { return model; }
-    public void setModel(String model) { this.model = model; }
-    public String getSocket() { return socket; }
-    public void setSocket(String socket) { this.socket = socket; }
-    public double getFrequency() { return frequency; }
-    public void setFrequency(double frequency) { this.frequency = frequency; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-    public List<AssemblyModel> getAssemblies() {
-        return assemblies;
+
+    public String getModel() {
+        return model;
     }
 
-    public void setAssemblies(List<AssemblyModel> assemblies) {
-        this.assemblies = assemblies;
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getSocket() {
+        return socket;
+    }
+
+    public void setSocket(String socket) {
+        this.socket = socket;
+    }
+
+    public double getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(double frequency) {
+        this.frequency = frequency;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

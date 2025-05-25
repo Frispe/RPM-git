@@ -16,7 +16,7 @@ public class InMemoryAssemblyServiceImpl implements AssemblyService {
 
     @Override
     public List<AssemblyModel> findAllAssemblies() {
-        return assemblyRepository.findAll();
+        return assemblyRepository.findAllWithProcessorAndBrand();
     }
 
     @Override

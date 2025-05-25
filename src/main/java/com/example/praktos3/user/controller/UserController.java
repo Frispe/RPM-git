@@ -81,11 +81,4 @@ public class UserController {
         model.addAttribute("totalPages", 1);
         return "userList";
     }
-    @GetMapping("/{id}/orders")
-    public String getUserOrders(@PathVariable Long id, Model model) {
-        UserModel user = userService.findUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("orders", user.getOrders());
-        return "userOrders";
-    }
 }

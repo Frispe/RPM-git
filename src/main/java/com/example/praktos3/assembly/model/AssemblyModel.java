@@ -11,9 +11,6 @@ public class AssemblyModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull(message = "CPU ID is required")
-    private Long cpuId;
-
     @NotNull(message = "Motherboard ID is required")
     private Long motherboardId;
 
@@ -42,10 +39,10 @@ public class AssemblyModel {
     public AssemblyModel() {
     }
 
-    public AssemblyModel(long id, Long cpuId, Long motherboardId, Long ramId, Long gpuId,
+    // Удален параметр cpuId из конструктора
+    public AssemblyModel(long id, Long motherboardId, Long ramId, Long gpuId,
                          Long powerSupplyId, Long caseId, Long coolingSystemId, Long pcBuilderId) {
         this.id = id;
-        this.cpuId = cpuId;
         this.motherboardId = motherboardId;
         this.ramId = ramId;
         this.gpuId = gpuId;
@@ -58,8 +55,6 @@ public class AssemblyModel {
     // Геттеры и сеттеры
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
-    public Long getCpuId() { return cpuId; }
-    public void setCpuId(Long cpuId) { this.cpuId = cpuId; }
     public Long getMotherboardId() { return motherboardId; }
     public void setMotherboardId(Long motherboardId) { this.motherboardId = motherboardId; }
     public Long getRamId() { return ramId; }

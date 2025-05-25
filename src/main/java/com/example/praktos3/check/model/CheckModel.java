@@ -1,6 +1,5 @@
 package com.example.praktos3.check.model;
 
-import com.example.praktos3.order.model.OrderModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -23,9 +22,6 @@ public class CheckModel {
     @Size(min = 10, max = 200, message = "Delivery address must be at least 10 characters")
     private String deliveryAddress;
 
-    @OneToOne(mappedBy = "check")
-    private OrderModel order;
-
     public CheckModel() {
     }
 
@@ -36,7 +32,6 @@ public class CheckModel {
         this.deliveryAddress = deliveryAddress;
     }
 
-    // Геттеры и сеттеры
     public Long getId() {
         return id;
     }
@@ -45,35 +40,27 @@ public class CheckModel {
         this.id = id;
     }
 
-    public String getReceiptCode() {
+    public @NotBlank(message = "Receipt code cannot be blank") @Size(min = 3, max = 50, message = "Receipt code must be between 3 and 50 characters") String getReceiptCode() {
         return receiptCode;
     }
 
-    public void setReceiptCode(String receiptCode) {
+    public void setReceiptCode(@NotBlank(message = "Receipt code cannot be blank") @Size(min = 3, max = 50, message = "Receipt code must be between 3 and 50 characters") String receiptCode) {
         this.receiptCode = receiptCode;
     }
 
-    public Double getTotalPrice() {
+    public @NotNull(message = "Total price cannot be null") @PositiveOrZero(message = "Total price must be positive or zero") Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(@NotNull(message = "Total price cannot be null") @PositiveOrZero(message = "Total price must be positive or zero") Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public String getDeliveryAddress() {
+    public @NotBlank(message = "Delivery address cannot be blank") @Size(min = 10, max = 200, message = "Delivery address must be at least 10 characters") String getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
+    public void setDeliveryAddress(@NotBlank(message = "Delivery address cannot be blank") @Size(min = 10, max = 200, message = "Delivery address must be at least 10 characters") String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
-    }
-
-    public OrderModel getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderModel order) {
-        this.order = order;
     }
 }

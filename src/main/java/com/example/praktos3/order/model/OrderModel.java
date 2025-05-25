@@ -1,62 +1,47 @@
 package com.example.praktos3.order.model;
 
-import com.example.praktos3.addition.model.AdditionModel;
-import com.example.praktos3.check.model.CheckModel;
-import com.example.praktos3.guarantee.model.GuaranteeModel;
-import com.example.praktos3.payment.model.PaymentMethodModel;
-import com.example.praktos3.user.model.UserModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
-import java.util.List;
-
 @Entity
 @Table(name = "orders")
 public class OrderModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)  // Изменено на IDENTITY для автоинкремента
+    private long id;
 
     @Positive(message = "Assembly ID must be positive")
+    @Column(nullable = false)
     private int assemblyId;
 
+    @Positive(message = "Customer ID must be positive")
+    @Column(nullable = false)
+    private int customerId;
+
     @NotBlank(message = "Order date is required")
+    @Column(nullable = false, name = "order_date")  // Указано имя колонки в БД
     private String orderDate;
 
     @NotBlank(message = "Status is required")
+    @Column(nullable = false)
     private String status;
 
     @PositiveOrZero(message = "Total price must be positive or zero")
+    @Column(nullable = false)
     private double totalPrice;
+
+    @Positive(message = "Payment method ID must be positive")
+    @Column(nullable = false)
+    private int paymentMethodId;
 
     @Column(nullable = false)
     private String warrantyCode;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "check_id", referencedColumnName = "id")
-    private CheckModel check;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "order_additions",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "addition_id"))
-    private List<AdditionModel> additions;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserModel user;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "guarantee_id", referencedColumnName = "id")
-    private GuaranteeModel guarantee;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethodModel paymentMethod;
-
+    @Positive(message = "Check ID must be positive")
+    @Column(nullable = false)
+    private int checkId;
 
     public OrderModel() {
     }
@@ -66,20 +51,22 @@ public class OrderModel {
                       String warrantyCode, int checkId) {
         this.id = id;
         this.assemblyId = assemblyId;
+        this.customerId = customerId;
         this.orderDate = orderDate;
         this.status = status;
         this.totalPrice = totalPrice;
+        this.paymentMethodId = paymentMethodId;
         this.warrantyCode = warrantyCode;
-
+        this.checkId = checkId;
     }
 
     @Positive(message = "Check ID must be positive")
-    public CheckModel getCheck() {
-        return check;
+    public int getCheckId() {
+        return checkId;
     }
 
-    public void setCheck(CheckModel check) {
-        this.check = check;
+    public void setCheckId(@Positive(message = "Check ID must be positive") int checkId) {
+        this.checkId = checkId;
     }
 
     public String getWarrantyCode() {
@@ -88,6 +75,15 @@ public class OrderModel {
 
     public void setWarrantyCode(String warrantyCode) {
         this.warrantyCode = warrantyCode;
+    }
+
+    @Positive(message = "Payment method ID must be positive")
+    public int getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
+    public void setPaymentMethodId(@Positive(message = "Payment method ID must be positive") int paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 
     @PositiveOrZero(message = "Total price must be positive or zero")
@@ -115,6 +111,15 @@ public class OrderModel {
         this.orderDate = orderDate;
     }
 
+    @Positive(message = "Customer ID must be positive")
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(@Positive(message = "Customer ID must be positive") int customerId) {
+        this.customerId = customerId;
+    }
+
     @Positive(message = "Assembly ID must be positive")
     public int getAssemblyId() {
         return assemblyId;
@@ -130,36 +135,5 @@ public class OrderModel {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public List<AdditionModel> getAdditions() {
-        return additions;
-    }
-
-    public void setAdditions(List<AdditionModel> additions) {
-        this.additions = additions;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
-    public GuaranteeModel getGuarantee() {
-        return guarantee;
-    }
-
-    public void setGuarantee(GuaranteeModel guarantee) {
-        this.guarantee = guarantee;
-    }
-
-    public PaymentMethodModel getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethodModel paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 }

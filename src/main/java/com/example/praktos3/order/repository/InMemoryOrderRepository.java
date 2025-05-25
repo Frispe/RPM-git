@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface InMemoryOrderRepository extends JpaRepository<OrderModel, Long> {
     List<OrderModel> findByOrderDate(String orderDate);
-    List<OrderModel> findByUserId(Long userId);
 
     default List<OrderModel> findOrdersWithPagination(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
